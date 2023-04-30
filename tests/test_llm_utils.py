@@ -1,9 +1,9 @@
 import pytest
 from openai.error import APIError, RateLimitError
 
-from autogpt.llm import COSTS, get_ada_embedding
+from autogpt.llm import COSTS, get_ada_embedding, token_counter
 from autogpt.llm.llm_utils import retry_openai_api
-from autogpt.llm import token_counter
+
 
 @pytest.fixture(params=[RateLimitError, APIError])
 def error(request):

@@ -9,10 +9,10 @@ from colorama import Fore, Style
 from openai.error import APIError, RateLimitError, Timeout
 
 from autogpt.config import Config
+from autogpt.llm import token_counter
 from autogpt.llm.api_manager import ApiManager
 from autogpt.llm.base import Message
 from autogpt.logs import logger
-from autogpt.llm import token_counter
 
 
 def retry_openai_api(
