@@ -8,6 +8,7 @@ from typing import Generator
 import requests
 from colorama import Back, Fore
 from requests.adapters import HTTPAdapter, Retry
+from autogpt import token_counter
 
 from autogpt.commands.command import command
 from autogpt.config import Config
@@ -90,6 +91,12 @@ def read_file(filename: str) -> str:
     try:
         with open(filename, "r", encoding="utf-8") as f:
             content = f.read()
+
+        token_usage = token_counter.count_string_tokens(content, CFG.fast_llm_model)
+        if token_usage > 8191:
+            # File is too long
+            return f"Error: File is too long ({token_usage} tokens). Please summarize the file."
+        
         return content
     except Exception as e:
         return f"Error: {str(e)}"
