@@ -95,12 +95,17 @@ def read_file(filename: str) -> str:
         if token_usage > 8191:
             # File is too long
             return f"Error: File is too long ({token_usage} tokens). Please summarize the file."
-        
+
         return content
     except Exception as e:
         return f"Error: {str(e)}"
 
-@command("summarize_file", "Summarize file", '"filename": "<filename>", "question": "<what you want to know about the file contents>"')
+
+@command(
+    "summarize_file",
+    "Summarize file",
+    '"filename": "<filename>", "question": "<what you want to know about the file contents>"',
+)
 def summarize_file(filename: str, question: str) -> str:
     """Summarize a file with a given question.
 
@@ -117,6 +122,7 @@ def summarize_file(filename: str, question: str) -> str:
         return summarize_text(filename, content, question)
     except Exception as e:
         return f"Error: {str(e)}"
+
 
 def ingest_file(
     filename: str, memory, max_length: int = 4000, overlap: int = 200
