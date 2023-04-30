@@ -1,6 +1,7 @@
 import pytest
 from openai.error import APIError, RateLimitError
 
+from autogpt import token_counter
 from autogpt.llm import COSTS, get_ada_embedding
 from autogpt.llm.llm_utils import retry_openai_api
 
@@ -127,3 +128,21 @@ def test_get_ada_embedding(mock_create_embedding, api_manager):
     assert api_manager.get_total_prompt_tokens() == 5
     assert api_manager.get_total_completion_tokens() == 0
     assert api_manager.get_total_cost() == (5 * cost) / 1000
+
+def test_get_ada_embedding_large_input_test(mock_create_embedding, api_manager):
+    model = "text-embedding-ada-002"
+
+    # Generate a large input greater than 8192 tokens
+    input = "test " * 100000 # Go to the extreme
+
+    # Tokenize the input and check the length using token_counter
+    tokens = token_counter.count_string_tokens(input, model)
+
+    assert tokens > 8192 # Just to be sure
+
+    embedding = get_ada_embedding(input)
+
+    assert embedding == [0.1, 0.2, 0.3]
+    
+    # No error has been raised. We have completed an embeddeding with 
+    #  input text larger than ada's allowed input size.
