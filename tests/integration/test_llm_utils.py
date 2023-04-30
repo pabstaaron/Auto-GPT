@@ -16,7 +16,6 @@ def random_large_string():
     return "".join(random.choice(list(string.ascii_lowercase), size=n_characters))
 
 
-@pytest.mark.xfail(reason="We have no mechanism for embedding large strings.")
 @requires_api_key("OPENAI_API_KEY")
 def test_get_ada_embedding_large_context(random_large_string):
     # This test should be able to mock the openai call after we have a fix.  We don't need
