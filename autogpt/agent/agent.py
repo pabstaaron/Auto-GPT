@@ -222,9 +222,6 @@ class Agent:
                 for plugin in cfg.plugins:
                     if not plugin.can_handle_pre_command():
                         continue
-                    command_name, arguments = plugin.pre_command(
-                        command_name, arguments
-                    )
                 command_result = execute_command(
                     self.command_registry,
                     command_name,
